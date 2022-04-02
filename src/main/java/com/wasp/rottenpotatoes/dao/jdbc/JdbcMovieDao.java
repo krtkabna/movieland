@@ -6,7 +6,6 @@ import com.wasp.rottenpotatoes.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
