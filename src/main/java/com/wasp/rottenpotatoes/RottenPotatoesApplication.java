@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RottenpotatoesApplication {
+public class RottenPotatoesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RottenpotatoesApplication.class, args);
+		SpringApplication.run(RottenPotatoesApplication.class, args);
 	}
 
 }
