@@ -19,7 +19,7 @@ public class Movie {
     private double price;
 
     private String posterLink;
-    private List<County> counties;
+    private List<Country> countries;
     private List<Genre> genres;
     private List<Review> reviews;
 }
