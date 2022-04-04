@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/v1/movie")
@@ -15,8 +16,9 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping()
-    public Iterable<Movie> getAll() {
-        return movieService.getAll();
+    public Iterable<Movie> getAll(@RequestParam Optional<String> rating,
+                                  @RequestParam Optional<String> price) {
+        return movieService.getAllSorted(rating, price);
     }
 
     @GetMapping("random")
@@ -25,7 +27,9 @@ public class MovieController {
     }
 
     @GetMapping("genre")
-    public Iterable<Movie> getByGenre(@RequestParam Long genreId) {
-        return movieService.getAllByGenre(genreId);
+    public Iterable<Movie> getByGenre(@RequestParam Long genreId,
+                                      @RequestParam Optional<String> rating,
+                                      @RequestParam Optional<String> price) {
+        return movieService.getAllByGenreSorted(genreId, rating, price);
     }
 }
