@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,6 +25,13 @@ public class MovieController {
     @GetMapping("random")
     public Iterable<Movie> getRandom(ModelMap model) {
         Iterable<Movie> movies = movieService.getRandom();
+        model.addAttribute("movies", movies);
+        return movies;
+    }
+
+    @GetMapping("movie/genre")
+    public Iterable<Movie> getByGenre(@RequestParam Long genreId, ModelMap model) {
+        Iterable<Movie> movies = movieService.getAllByGenre(genreId);
         model.addAttribute("movies", movies);
         return movies;
     }

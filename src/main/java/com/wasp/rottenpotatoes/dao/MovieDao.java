@@ -6,4 +6,6 @@ public interface MovieDao {
     Iterable<Movie> findAll();
 
     Iterable<Movie> getRandomMovies();
+
+    Iterable<Movie> findAllByGenreId(Long genreId);
 }

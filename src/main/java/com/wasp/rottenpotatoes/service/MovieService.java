@@ -18,4 +18,7 @@ public class MovieService {
         return movieDao.getRandomMovies();
     }
 
+    public Iterable<Movie> getAllByGenre(Long genreId) {
+        return movieDao.findAllByGenreId(genreId);
+    }
 }
