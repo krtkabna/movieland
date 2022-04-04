@@ -21,6 +21,7 @@ public class JdbcMovieDao implements MovieDao {
         "LIMIT 3;";
     private final JdbcTemplate jdbcTemplate;
 
+    @Override
     public Iterable<Movie> findAll() {
         return jdbcTemplate.query(SELECT_ALL, MOVIE_WITH_POSTER_ROW_MAPPER);
     }
