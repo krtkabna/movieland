@@ -1,4 +1,4 @@
-package com.wasp.rottenpotatoes.dao.config;
+package com.wasp.rottenpotatoes.config;
 
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.context.annotation.Configuration;
