@@ -1,5 +1,9 @@
 package com.wasp.rottenpotatoes.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.BAD_REQUEST) //TODO ask which exception handler fits better
 public class InvalidSortOrderException extends RuntimeException {
     public InvalidSortOrderException(String message) {
         super(message);

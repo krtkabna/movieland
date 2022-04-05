@@ -19,7 +19,7 @@ public class JdbcGenreDao implements GenreDao {
     private static final String SELECT_BY_ID = "SELECT genre_id, genre_name from genre WHERE genre_id=?";
     private final JdbcTemplate jdbcTemplate;
 
-    private Map<Long, Genre> cache = new HashMap<>();
+    private final Map<Long, Genre> cache = new HashMap<>();
 
     @Override
     public Iterable<Genre> findAll() {

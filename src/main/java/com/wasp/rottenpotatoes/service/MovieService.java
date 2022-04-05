@@ -3,6 +3,7 @@ package com.wasp.rottenpotatoes.service;
 import com.wasp.rottenpotatoes.dao.MovieDao;
 import com.wasp.rottenpotatoes.entity.Movie;
 import com.wasp.rottenpotatoes.entity.SortOrder;
+import com.wasp.rottenpotatoes.exception.InvalidSortOrderException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class MovieService {
             if (isDesc(orderByRating.get())) {
                 return movieDao.findAllByGenreIdSortByRating(genreId);
             } else {
-                log.info("Invalid sort order for rating: " + orderByRating.get());
+                throw new InvalidSortOrderException("Ascending order is not allowed for rating");
             }
         } else if (orderByPrice.isPresent()) {
             return getAllSortedByPrice(orderByPrice.get());
@@ -53,8 +54,7 @@ public class MovieService {
                 case DESC -> movieDao.findAllSortByPriceDesc();
             };
         } catch (IllegalArgumentException e) {
-            log.warn("No such sort order: {}. Returning unsorted", direction.toUpperCase(), e);
-            result = movieDao.findAll();
+            throw new InvalidSortOrderException("No such sort order: " + direction.toUpperCase(), e);
         }
         return result;
     }
@@ -63,8 +63,7 @@ public class MovieService {
         try {
             return SortOrder.DESC.equals(SortOrder.valueOf(order.toUpperCase()));
         } catch (IllegalArgumentException e) {
-            log.warn("Invalid sort order provided: {}", order, e);
-            return false;
+            throw new InvalidSortOrderException("No such sort order: " + order.toUpperCase(), e);
         }
     }
 }
