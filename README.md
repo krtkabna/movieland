@@ -1,0 +1,3 @@
+# RottenPotatoes
+
+A movieland implementation
