@@ -7,8 +7,23 @@
             </Pattern>
         </layout>
     </appender>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>log/rottenpotatoes.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>log/rottenpotatoes-%d{yyyy-MM-dd}.log.%i</fileNamePattern>
+            <maxFileSize>5MB</maxFileSize>
 
-    <root level="info">
+            <TimeBasedFileNamingAndTriggeringPolicy
+                    class="com.wasp.rottenpotatoes.config.log.StartupSizeTimeBasedTriggeringPolicy"/>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d [%t] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="FILE"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 
