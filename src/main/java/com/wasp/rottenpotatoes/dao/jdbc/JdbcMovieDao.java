@@ -20,9 +20,9 @@ public class JdbcMovieDao implements MovieDao {
         INNER JOIN poster on movie.movie_id = poster.movie_id""";
     private static final String SELECT_ALL = SELECT_WITH_POSTER_TEMPLATE + ";";
 
-    private static final String ORDER_BY_MOVIE_RATING_DESC = "ORDER BY movie.rating DESC";
-    private static final String ORDER_BY_MOVIE_PRICE_ASC = "ORDER BY movie.price ASC";
-    private static final String ORDER_BY_MOVIE_PRICE_DESC = "ORDER BY movie.price DESC";
+    private static final String ORDER_BY_MOVIE_RATING_DESC = " ORDER BY movie.rating DESC";
+    private static final String ORDER_BY_MOVIE_PRICE_ASC = " ORDER BY movie.price ASC";
+    private static final String ORDER_BY_MOVIE_PRICE_DESC = " ORDER BY movie.price DESC";
     private static final String SELECT_ALL_SORT_BY_RATING = SELECT_WITH_POSTER_TEMPLATE + ORDER_BY_MOVIE_RATING_DESC;
     private static final String SELECT_ALL_SORT_BY_PRICE_ASC = SELECT_WITH_POSTER_TEMPLATE + ORDER_BY_MOVIE_PRICE_ASC;
     private static final String SELECT_ALL_SORT_BY_PRICE_DESC = SELECT_WITH_POSTER_TEMPLATE + ORDER_BY_MOVIE_PRICE_DESC;
