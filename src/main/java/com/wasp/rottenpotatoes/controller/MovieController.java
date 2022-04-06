@@ -8,7 +8,6 @@ import com.wasp.rottenpotatoes.request.SortBy;
 import com.wasp.rottenpotatoes.request.SortingStrategy;
 import com.wasp.rottenpotatoes.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,8 +29,8 @@ public class MovieController {
     }
 
     @GetMapping("random")
-    public Iterable<Movie> getRandom(@Value("${movie.random.quantity}") int quantity) {
-        return movieService.getRandom(quantity);
+    public Iterable<Movie> getRandom() {
+        return movieService.getRandom();
     }
 
     @GetMapping("genre")
@@ -45,19 +44,19 @@ public class MovieController {
 
     private SortingStrategy getSortingStrategy(Optional<String> rating, Optional<String> price) {
         if (rating.isPresent()) {
-            return new SortingStrategy(SortBy.RATING, SortOrder.valueOf(rating.get()));
+            return new SortingStrategy(SortBy.RATING, SortOrder.valueOf(rating.get().toUpperCase()));
         } else if (price.isPresent()) {
-            return new SortingStrategy(SortBy.PRICE, SortOrder.valueOf(price.get()));
+            return new SortingStrategy(SortBy.PRICE, SortOrder.valueOf(price.get().toUpperCase()));
         }
         return null;
     }
 
     private void validate(MovieRequest movieRequest) {
         SortingStrategy strategy = movieRequest.getSortingStrategy();
-        if (strategy.getSortBy() == SortBy.RATING) {
-            if (strategy.getSortOrder() != SortOrder.DESC) {
-                throw new InvalidSortOrderException("Ascending order is not allowed for rating");
-            }
+        if ((strategy != null)
+            && (strategy.getSortBy() == SortBy.RATING)
+            && (strategy.getSortOrder() != SortOrder.DESC)) {
+            throw new InvalidSortOrderException("Ascending order is not allowed for rating");
         }
     }
 }
