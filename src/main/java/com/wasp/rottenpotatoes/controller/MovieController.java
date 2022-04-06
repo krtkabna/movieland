@@ -1,6 +1,11 @@
 package com.wasp.rottenpotatoes.controller;
 
 import com.wasp.rottenpotatoes.entity.Movie;
+import com.wasp.rottenpotatoes.entity.SortOrder;
+import com.wasp.rottenpotatoes.exception.InvalidSortOrderException;
+import com.wasp.rottenpotatoes.request.MovieRequest;
+import com.wasp.rottenpotatoes.request.SortBy;
+import com.wasp.rottenpotatoes.request.SortingStrategy;
 import com.wasp.rottenpotatoes.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +24,9 @@ public class MovieController {
     @GetMapping()
     public Iterable<Movie> getAll(@RequestParam Optional<String> rating,
                                   @RequestParam Optional<String> price) {
-        return movieService.getAll(rating, price);
+        MovieRequest movieRequest = new MovieRequest(getSortingStrategy(rating, price));
+        validate(movieRequest);
+        return movieService.getAll(movieRequest);
     }
 
     @GetMapping("random")
@@ -31,6 +38,26 @@ public class MovieController {
     public Iterable<Movie> getByGenre(@RequestParam Long genreId,
                                       @RequestParam Optional<String> rating,
                                       @RequestParam Optional<String> price) {
-        return movieService.getAllByGenre(genreId, rating, price);
+        MovieRequest movieRequest = new MovieRequest(getSortingStrategy(rating, price));
+        validate(movieRequest);
+        return movieService.getAllByGenre(genreId, movieRequest);
+    }
+
+    private SortingStrategy getSortingStrategy(Optional<String> rating, Optional<String> price) {
+        if (rating.isPresent()) {
+            return new SortingStrategy(SortBy.RATING, SortOrder.valueOf(rating.get()));
+        } else if (price.isPresent()) {
+            return new SortingStrategy(SortBy.PRICE, SortOrder.valueOf(price.get()));
+        }
+        return null;
+    }
+
+    private void validate(MovieRequest movieRequest) {
+        SortingStrategy strategy = movieRequest.getSortingStrategy();
+        if (strategy.getSortBy() == SortBy.RATING) {
+            if (strategy.getSortOrder() != SortOrder.DESC) {
+                throw new InvalidSortOrderException("Ascending order is not allowed for rating");
+            }
+        }
     }
 }
