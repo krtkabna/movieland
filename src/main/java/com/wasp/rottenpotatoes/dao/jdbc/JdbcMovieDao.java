@@ -15,9 +15,9 @@ public class JdbcMovieDao implements MovieDao {
     private static final MovieWithPosterRowMapper MOVIE_WITH_POSTER_ROW_MAPPER = new MovieWithPosterRowMapper();
 
     private static final String SELECT_WITH_POSTER_TEMPLATE = """
-            SELECT movie.movie_id, movie.name_ru, movie.name_en, movie.year, movie.rating, movie.price, poster.link
-            FROM movie
-            INNER JOIN poster on movie.movie_id = poster.movie_id""";
+        SELECT movie.movie_id, movie.name_ru, movie.name_en, movie.year, movie.rating, movie.price, poster.link
+        FROM movie
+        INNER JOIN poster on movie.movie_id = poster.movie_id""";
     private static final String SELECT_ALL = SELECT_WITH_POSTER_TEMPLATE + ";";
 
     private static final String ORDER_BY_MOVIE_RATING_DESC = "ORDER BY movie.rating DESC";
