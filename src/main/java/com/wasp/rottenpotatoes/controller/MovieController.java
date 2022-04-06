@@ -3,6 +3,8 @@ package com.wasp.rottenpotatoes.controller;
 import com.wasp.rottenpotatoes.entity.Movie;
 import com.wasp.rottenpotatoes.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,8 +24,8 @@ public class MovieController {
     }
 
     @GetMapping("random")
-    public Iterable<Movie> getRandom() {
-        return movieService.getRandom();
+    public Iterable<Movie> getRandom(@Value("${movie.random.quantity}") int quantity) {
+        return movieService.getRandom(quantity);
     }
 
     @GetMapping("genre")

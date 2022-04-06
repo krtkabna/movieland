@@ -28,8 +28,8 @@ public class MovieService {
         return movieDao.findAll();
     }
 
-    public Iterable<Movie> getRandom() {
-        return movieDao.getRandomMovies();
+    public Iterable<Movie> getRandom(int quantity) {
+        return movieDao.getRandomMovies(quantity);
     }
 
     public Iterable<Movie> getAllByGenreSorted(Long genreId, Optional<String> orderByRating, Optional<String> orderByPrice) {

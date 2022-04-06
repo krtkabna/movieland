@@ -28,7 +28,7 @@ public class JdbcMovieDao implements MovieDao {
 
     private static final String SELECT_RANDOM = SELECT_WITH_POSTER_TEMPLATE +
         "ORDER BY random()\n" +
-        "LIMIT 3;";
+        "LIMIT ?;";
 
     private static final String SELECT_ALL_BY_GENRE = SELECT_WITH_POSTER_TEMPLATE +
         "         INNER JOIN movies_genres ON movie.movie_id = movies_genres.movie_id\n" +
@@ -62,8 +62,8 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public Iterable<Movie> getRandomMovies() {
-        return jdbcTemplate.query(SELECT_RANDOM, MOVIE_WITH_POSTER_ROW_MAPPER);
+    public Iterable<Movie> getRandomMovies(int quantity) {
+        return jdbcTemplate.query(SELECT_RANDOM, ps -> ps.setInt(1, quantity), MOVIE_WITH_POSTER_ROW_MAPPER);
     }
 
     @Override

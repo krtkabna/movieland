@@ -11,7 +11,7 @@ public interface MovieDao {
 
     Iterable<Movie> findAllSortByPriceDesc();
 
-    Iterable<Movie> getRandomMovies();
+    Iterable<Movie> getRandomMovies(int quantity);
 
     Iterable<Movie> findAllByGenreId(Long genreId);
 
