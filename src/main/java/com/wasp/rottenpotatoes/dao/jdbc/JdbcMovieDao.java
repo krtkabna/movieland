@@ -19,6 +19,7 @@ public class JdbcMovieDao implements MovieDao {
         FROM movie
         INNER JOIN poster on movie.movie_id = poster.movie_id""";
     private static final String SELECT_ALL = SELECT_WITH_POSTER_TEMPLATE + ";";
+    private static final String SELECT_RANDOM = SELECT_WITH_POSTER_TEMPLATE + " ORDER BY random() LIMIT ?";
 
     private static final String ORDER_BY_MOVIE_RATING_DESC = " ORDER BY movie.rating DESC";
     private static final String ORDER_BY_MOVIE_PRICE_ASC = " ORDER BY movie.price ASC";
@@ -27,9 +28,6 @@ public class JdbcMovieDao implements MovieDao {
     private static final String SELECT_ALL_SORT_BY_PRICE_ASC = SELECT_WITH_POSTER_TEMPLATE + ORDER_BY_MOVIE_PRICE_ASC;
     private static final String SELECT_ALL_SORT_BY_PRICE_DESC = SELECT_WITH_POSTER_TEMPLATE + ORDER_BY_MOVIE_PRICE_DESC;
 
-    private static final String SELECT_RANDOM = SELECT_WITH_POSTER_TEMPLATE + """
-        ORDER BY random()
-        LIMIT ?;""";
 
     private static final String SELECT_ALL_BY_GENRE = SELECT_WITH_POSTER_TEMPLATE + """
                  INNER JOIN movies_genres ON movie.movie_id = movies_genres.movie_id
