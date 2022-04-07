@@ -2,6 +2,7 @@ package com.wasp.rottenpotatoes.controller;
 
 import com.wasp.rottenpotatoes.entity.Movie;
 import com.wasp.rottenpotatoes.entity.SortOrder;
+import com.wasp.rottenpotatoes.entity.nbu.Currency;
 import com.wasp.rottenpotatoes.exception.InvalidSortOrderException;
 import com.wasp.rottenpotatoes.request.MovieRequest;
 import com.wasp.rottenpotatoes.request.SortBy;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequestMapping(path = "/v1/movie")
 @RequiredArgsConstructor
 public class MovieController {
+    public static final String UAH = "UAH";
     private final MovieService movieService;
 
     @GetMapping()
@@ -53,8 +55,8 @@ public class MovieController {
     }
 
     @GetMapping("{id}")
-    public Movie getMovieById(@PathVariable Long id) {
-        return movieService.getById(id);
+    public Movie getMovieById(@PathVariable Long id, @RequestParam(defaultValue = UAH) Currency currency) {
+        return movieService.getById(id, currency);
     }
 
     private void validate(MovieRequest movieRequest) {

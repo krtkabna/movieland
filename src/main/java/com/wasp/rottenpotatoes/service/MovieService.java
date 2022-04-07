@@ -1,6 +1,7 @@
 package com.wasp.rottenpotatoes.service;
 
 import com.wasp.rottenpotatoes.entity.Movie;
+import com.wasp.rottenpotatoes.entity.nbu.Currency;
 import com.wasp.rottenpotatoes.request.MovieRequest;
 
 public interface MovieService {
@@ -13,4 +14,6 @@ public interface MovieService {
     Iterable<Movie> getAllByGenre(Long genreId, MovieRequest movieRequest);
 
     Movie getById(Long id);
+
+    Movie getById(Long id, Currency currency);
 }
