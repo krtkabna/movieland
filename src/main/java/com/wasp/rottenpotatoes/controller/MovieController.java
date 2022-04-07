@@ -9,6 +9,7 @@ import com.wasp.rottenpotatoes.request.SortingStrategy;
 import com.wasp.rottenpotatoes.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,6 +50,11 @@ public class MovieController {
             return new SortingStrategy(SortBy.PRICE, SortOrder.valueOf(price.get().toUpperCase()));
         }
         return null;
+    }
+
+    @GetMapping("{id}")
+    public Movie getMovieById(@PathVariable Long id) {
+        return movieService.getById(id);
     }
 
     private void validate(MovieRequest movieRequest) {

@@ -17,4 +17,6 @@ public interface MovieDao {
     Iterable<Movie> findAllByGenreIdSortByRating(Long genreId);
 
     Iterable<Movie> findAllByGenreIdSortByPrice(Long genreId, SortOrder order);
+
+    Movie findById(Long id);
 }

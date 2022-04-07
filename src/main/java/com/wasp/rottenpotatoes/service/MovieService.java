@@ -8,7 +8,9 @@ public interface MovieService {
 
     Iterable<Movie> getAll(MovieRequest movieRequest);
 
+    Iterable<Movie> getRandom();
+
     Iterable<Movie> getAllByGenre(Long genreId, MovieRequest movieRequest);
 
-    Iterable<Movie> getRandom();
+    Movie getById(Long id);
 }

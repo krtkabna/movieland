@@ -2,6 +2,7 @@ package com.wasp.rottenpotatoes.service;
 
 import com.wasp.rottenpotatoes.dao.MovieDao;
 import com.wasp.rottenpotatoes.entity.Movie;
+import com.wasp.rottenpotatoes.exception.MovieNotFoundException;
 import com.wasp.rottenpotatoes.request.MovieRequest;
 import com.wasp.rottenpotatoes.request.SortBy;
 import com.wasp.rottenpotatoes.request.SortingStrategy;
@@ -54,5 +55,14 @@ public class MovieServiceImpl implements MovieService {
         } else {
             return movieDao.findAllByGenreId(genreId);
         }
+    }
+
+    @Override
+    public Movie getById(Long id) {
+        Movie movie = movieDao.findById(id);
+        if (movie == null) {
+            throw new MovieNotFoundException("No movie found by id: " + id);
+        }
+        return movie;
     }
 }
