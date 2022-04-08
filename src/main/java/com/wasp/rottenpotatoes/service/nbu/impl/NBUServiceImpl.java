@@ -17,6 +17,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -25,16 +26,25 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class NBUServiceImpl implements NBUService {
+    public static final String APPEND_DATE_TO_URL_FORMAT = "&date=%s";
+    public static final String NBU_DATE_PATTERN = "yyyyMMdd";
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient;
 
     @Value("${nbu.path}")
-    private String url;
+    private String path;
+
 
     @Override
     @SneakyThrows
     public List<Rate> getRates(LocalDate date) {
-        return parse(getRatesJson());
+        String url = getUrl(date);
+        return parse(getRatesJson(url));
+    }
+
+    private String getUrl(LocalDate date) {
+        return path + APPEND_DATE_TO_URL_FORMAT.formatted(
+            date.format(DateTimeFormatter.ofPattern(NBU_DATE_PATTERN)));
     }
 
     private List<Rate> parse(String json) throws IOException {
@@ -44,7 +54,7 @@ public class NBUServiceImpl implements NBUService {
             .toList();
     }
 
-    private String getRatesJson() {
+    private String getRatesJson(String url) {
         try {
             log.info("request for url: {}", url);
             HttpRequest request = HttpRequest.newBuilder()

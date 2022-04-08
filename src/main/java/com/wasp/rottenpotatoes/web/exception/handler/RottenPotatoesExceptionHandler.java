@@ -48,7 +48,7 @@ public class RottenPotatoesExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage handleIllegalCurrency(IllegalCurrencyException e, HttpServletRequest request) {
         logError(e);
-        return buildErrorMessage("Illegal currency provided for path", HttpStatus.BAD_REQUEST, request);
+        return buildErrorMessage("Illegal currency provided", HttpStatus.BAD_REQUEST, request);
     }
 
     private void logError(Throwable e) {
