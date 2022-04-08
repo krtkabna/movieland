@@ -7,6 +7,7 @@ import com.wasp.rottenpotatoes.request.MovieRequest;
 import com.wasp.rottenpotatoes.request.SortBy;
 import com.wasp.rottenpotatoes.request.SortingStrategy;
 import com.wasp.rottenpotatoes.service.MovieService;
+import com.wasp.rottenpotatoes.web.exception.IllegalCurrencyException;
 import com.wasp.rottenpotatoes.web.exception.InvalidSortOrderException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,8 +56,8 @@ public class MovieController {
     }
 
     @GetMapping("{id}")
-    public Movie getMovieById(@PathVariable Long id, @RequestParam(defaultValue = UAH) Currency currency) {
-        return movieService.getById(id, currency);
+    public Movie getMovieById(@PathVariable Long id, @RequestParam(defaultValue = UAH) String currency) {
+        return movieService.getById(id, getCurrencyValue(currency));
     }
 
     private void validate(MovieRequest movieRequest) {
@@ -65,6 +66,14 @@ public class MovieController {
             && (strategy.getSortBy() == SortBy.RATING)
             && (strategy.getSortOrder() != SortOrder.DESC)) {
             throw new InvalidSortOrderException("Ascending order is not allowed for rating");
+        }
+    }
+
+    private Currency getCurrencyValue(String currency) {
+        try {
+            return Currency.valueOf(currency);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalCurrencyException("Invalid currency parameter: " + currency, e);
         }
     }
 }

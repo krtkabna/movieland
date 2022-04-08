@@ -38,29 +38,29 @@ public class RottenPotatoesExceptionHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleIllegalCurrency(IllegalCurrencyException e, HttpServletRequest request) {
-        logError(e);
-        return buildErrorMessage("Illegal currency provided for path", HttpStatus.BAD_REQUEST, request);
-    }
-
-    @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage handleMovieNotFound(MovieNotFoundException e, HttpServletRequest request) {
         logError(e);
         return buildErrorMessage(e.getLocalizedMessage(), HttpStatus.NOT_FOUND, request);
     }
 
-    private ErrorMessage buildErrorMessage(String message, HttpStatus status, HttpServletRequest request) {
-        return ErrorMessage.builder()
-            .timestamp(LocalDateTime.now())
-            .error(message) //FIXME user-friendly message
-            .status(status.value())
-            .path(request.getServletPath())
-            .build();
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleIllegalCurrency(IllegalCurrencyException e, HttpServletRequest request) {
+        logError(e);
+        return buildErrorMessage("Illegal currency provided for path", HttpStatus.BAD_REQUEST, request);
     }
 
     private void logError(Throwable e) {
         log.error(e.getClass().getSimpleName() + ": " + e.getLocalizedMessage(), e);
+    }
+
+    private ErrorMessage buildErrorMessage(String message, HttpStatus status, HttpServletRequest request) {
+        return ErrorMessage.builder()
+            .timestamp(LocalDateTime.now())
+            .error(message)
+            .status(status.value())
+            .path(request.getServletPath())
+            .build();
     }
 }

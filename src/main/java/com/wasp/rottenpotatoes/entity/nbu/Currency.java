@@ -7,6 +7,7 @@ public enum Currency {
 
     public static boolean contains(String name) {
         return Arrays.stream(values())
-            .anyMatch(value -> value.name().equalsIgnoreCase(name));
+            .map(Currency::name)
+            .anyMatch(value -> value.equalsIgnoreCase(name));
     }
 }

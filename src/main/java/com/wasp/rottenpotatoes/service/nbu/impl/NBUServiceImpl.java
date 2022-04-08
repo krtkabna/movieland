@@ -39,7 +39,7 @@ public class NBUServiceImpl implements NBUService {
 
     private List<Rate> parse(String json) throws IOException {
         return Arrays.stream(objectMapper.readValue(json, NBURateDto[].class))
-            .filter(dto -> Currency.contains(dto.getCurrencyCode()))//fixme кидається на те чого нема в єнамі НЕ ТИМ ЕКСЕПШЕНОМ
+            .filter(dto -> Currency.contains(dto.getCurrencyCode()))
             .map(mapDtoToRate())
             .toList();
     }
