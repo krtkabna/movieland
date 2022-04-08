@@ -1,8 +1,8 @@
 package com.wasp.rottenpotatoes.dao.jdbc;
 
 import com.wasp.rottenpotatoes.dao.GenreDao;
-import com.wasp.rottenpotatoes.dao.jdbc.util.GenreResultSetExtractor;
-import com.wasp.rottenpotatoes.dao.jdbc.util.GenreRowMapper;
+import com.wasp.rottenpotatoes.dao.jdbc.mapper.GenreResultSetExtractor;
+import com.wasp.rottenpotatoes.dao.jdbc.mapper.GenreRowMapper;
 import com.wasp.rottenpotatoes.entity.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;

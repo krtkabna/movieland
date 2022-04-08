@@ -13,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import static com.wasp.rottenpotatoes.entity.Movie.convertDoubleToBigDecimal;
 
 @Slf4j
 @Service
@@ -77,7 +80,8 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = getById(id);
         if (Currency.UAH != currency) {
             double rate = rateService.getRate(currency, LocalDate.now());
-            movie.setPrice(movie.getPrice() * rate);
+            BigDecimal newPrice = convertDoubleToBigDecimal(movie.getPrice().doubleValue() * rate);
+            movie.setPrice(newPrice);
         }
         return movie;
     }

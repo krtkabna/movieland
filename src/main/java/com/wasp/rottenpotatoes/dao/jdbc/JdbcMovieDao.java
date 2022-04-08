@@ -1,8 +1,8 @@
 package com.wasp.rottenpotatoes.dao.jdbc;
 
 import com.wasp.rottenpotatoes.dao.MovieDao;
-import com.wasp.rottenpotatoes.dao.jdbc.util.MovieResultSetExtractor;
-import com.wasp.rottenpotatoes.dao.jdbc.util.MovieWithPosterRowMapper;
+import com.wasp.rottenpotatoes.dao.jdbc.mapper.MovieResultSetExtractor;
+import com.wasp.rottenpotatoes.dao.jdbc.mapper.MovieWithPosterRowMapper;
 import com.wasp.rottenpotatoes.entity.Movie;
 import com.wasp.rottenpotatoes.entity.SortOrder;
 import lombok.RequiredArgsConstructor;

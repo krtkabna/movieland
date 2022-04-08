@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -30,16 +32,16 @@ public class NBUServiceImpl implements NBUService {
     public static final String NBU_DATE_PATTERN = "yyyyMMdd";
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient;
+    private final RestTemplate restTemplate;
 
     @Value("${nbu.path}")
     private String path;
-
 
     @Override
     @SneakyThrows
     public List<Rate> getRates(LocalDate date) {
         String url = getUrl(date);
-        return parse(getRatesJson(url));
+        return parse(getRatesJsonRestTemplate(url));
     }
 
     private String getUrl(LocalDate date) {
@@ -54,7 +56,7 @@ public class NBUServiceImpl implements NBUService {
             .toList();
     }
 
-    private String getRatesJson(String url) {
+    private String getRatesJsonHttpClient(String url) {
         try {
             log.info("request for url: {}", url);
             HttpRequest request = HttpRequest.newBuilder()
@@ -71,6 +73,11 @@ public class NBUServiceImpl implements NBUService {
             log.error("NBU request error, url: {}", url, ex);
             throw new NBURequestException("NBU request error, url: " + url);
         }
+    }
+
+    private String getRatesJsonRestTemplate(String url) {
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        return response.getBody();
     }
 
     private Function<NBURateDto, Rate> mapDtoToRate() {

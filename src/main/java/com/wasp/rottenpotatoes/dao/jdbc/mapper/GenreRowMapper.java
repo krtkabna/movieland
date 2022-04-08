@@ -1,4 +1,4 @@
-package com.wasp.rottenpotatoes.dao.jdbc.util;
+package com.wasp.rottenpotatoes.dao.jdbc.mapper;
 
 import com.wasp.rottenpotatoes.entity.Genre;
 import org.springframework.dao.DataAccessException;
