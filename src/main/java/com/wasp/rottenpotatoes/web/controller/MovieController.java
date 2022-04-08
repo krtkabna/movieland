@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequestMapping(path = "/v1/movie")
 @RequiredArgsConstructor
 public class MovieController {
-    public static final String UAH = "UAH";
+    private static final String UAH = "UAH";
     private final MovieService movieService;
 
     @GetMapping()

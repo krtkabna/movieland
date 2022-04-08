@@ -12,12 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -28,11 +25,10 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class NBUServiceImpl implements NBUService {
-    public static final String APPEND_DATE_TO_URL_FORMAT = "&date=%s";
-    public static final String NBU_DATE_PATTERN = "yyyyMMdd";
+    private static final String APPEND_DATE_TO_URL_FORMAT = "&date=%s";
+    private static final String NBU_DATE_PATTERN = "yyyyMMdd";
+    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
     private final ObjectMapper objectMapper;
-    private final HttpClient httpClient;
-    private final RestTemplate restTemplate;
 
     @Value("${nbu.path}")
     private String path;
@@ -40,13 +36,22 @@ public class NBUServiceImpl implements NBUService {
     @Override
     @SneakyThrows
     public List<Rate> getRates(LocalDate date) {
-        String url = getUrl(date);
-        return parse(getRatesJsonRestTemplate(url));
+        String url = formatUrlWithDate(date);
+        return parse(getRatesJson(url));
     }
 
-    private String getUrl(LocalDate date) {
+    private String formatUrlWithDate(LocalDate date) {
         return path + APPEND_DATE_TO_URL_FORMAT.formatted(
             date.format(DateTimeFormatter.ofPattern(NBU_DATE_PATTERN)));
+    }
+
+    private String getRatesJson(String url) {
+        try {
+            ResponseEntity<String> response = REST_TEMPLATE.getForEntity(url, String.class);
+            return response.getBody();
+        } catch (RestClientException e) {
+            throw new NBURequestException("NBU request error, url: " + url, e);
+        }
     }
 
     private List<Rate> parse(String json) throws IOException {
@@ -54,30 +59,6 @@ public class NBUServiceImpl implements NBUService {
             .filter(dto -> Currency.contains(dto.getCurrencyCode()))
             .map(mapDtoToRate())
             .toList();
-    }
-
-    private String getRatesJsonHttpClient(String url) {
-        try {
-            log.info("request for url: {}", url);
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
-
-            HttpResponse<String> response =
-                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (Exception ex) {
-            if (ex instanceof InterruptedException) {
-                Thread.currentThread().interrupt();
-            }
-            log.error("NBU request error, url: {}", url, ex);
-            throw new NBURequestException("NBU request error, url: " + url);
-        }
-    }
-
-    private String getRatesJsonRestTemplate(String url) {
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        return response.getBody();
     }
 
     private Function<NBURateDto, Rate> mapDtoToRate() {
