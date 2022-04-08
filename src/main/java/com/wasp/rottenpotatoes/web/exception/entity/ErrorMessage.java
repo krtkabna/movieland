@@ -1,4 +1,4 @@
-package com.wasp.rottenpotatoes.exception.entity;
+package com.wasp.rottenpotatoes.web.exception.entity;
 
 import lombok.Builder;
 import lombok.Data;

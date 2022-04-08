@@ -1,4 +1,4 @@
-package com.wasp.rottenpotatoes.exception;
+package com.wasp.rottenpotatoes.web.exception;
 
 public class MovieNotFoundException extends RuntimeException {
     public MovieNotFoundException(String message) {

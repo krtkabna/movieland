@@ -1,4 +1,4 @@
-package com.wasp.rottenpotatoes.controller;
+package com.wasp.rottenpotatoes.web.controller;
 
 import com.wasp.rottenpotatoes.entity.Genre;
 import com.wasp.rottenpotatoes.service.GenreService;

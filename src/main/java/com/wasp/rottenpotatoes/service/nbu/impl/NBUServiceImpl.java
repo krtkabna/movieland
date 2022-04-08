@@ -1,10 +1,12 @@
-package com.wasp.rottenpotatoes.service.nbu;
+package com.wasp.rottenpotatoes.service.nbu.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wasp.rottenpotatoes.entity.nbu.Currency;
 import com.wasp.rottenpotatoes.entity.nbu.NBURateDto;
 import com.wasp.rottenpotatoes.entity.nbu.Rate;
-import com.wasp.rottenpotatoes.exception.NBURequestException;
+import com.wasp.rottenpotatoes.service.nbu.NBUService;
+import com.wasp.rottenpotatoes.web.exception.NBURequestException;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,12 +23,10 @@ import java.util.function.Function;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class NBUServiceImpl implements NBUService {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final List<String> CURRENCY_NAMES =
-        Arrays.stream(Currency.values())
-            .map(Currency::name)
-            .toList();
+    private final ObjectMapper objectMapper;
+    private final HttpClient httpClient;
 
     @Value("${nbu.path}")
     private String url;
@@ -38,8 +38,8 @@ public class NBUServiceImpl implements NBUService {
     }
 
     private List<Rate> parse(String json) throws IOException {
-        return Arrays.stream(MAPPER.readValue(json, NBURateDto[].class))
-            .filter(dto -> CURRENCY_NAMES.contains(dto.getCc()))
+        return Arrays.stream(objectMapper.readValue(json, NBURateDto[].class))
+            .filter(dto -> Currency.contains(dto.getCurrencyCode()))//fixme кидається на те чого нема в єнамі НЕ ТИМ ЕКСЕПШЕНОМ
             .map(mapDtoToRate())
             .toList();
     }
@@ -47,13 +47,12 @@ public class NBUServiceImpl implements NBUService {
     private String getRatesJson() {
         try {
             log.info("request for url: {}", url);
-            var client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .build();
 
             HttpResponse<String> response =
-                client.send(request, HttpResponse.BodyHandlers.ofString());
+                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (Exception ex) {
             if (ex instanceof InterruptedException) {
@@ -65,6 +64,6 @@ public class NBUServiceImpl implements NBUService {
     }
 
     private Function<NBURateDto, Rate> mapDtoToRate() {
-        return dto -> new Rate(Currency.valueOf(dto.getCc()), dto.getRate());
+        return dto -> new Rate(Currency.valueOf(dto.getCurrencyCode()), dto.getRate());
     }
 }

@@ -1,13 +1,13 @@
-package com.wasp.rottenpotatoes.controller;
+package com.wasp.rottenpotatoes.web.controller;
 
 import com.wasp.rottenpotatoes.entity.Movie;
 import com.wasp.rottenpotatoes.entity.SortOrder;
 import com.wasp.rottenpotatoes.entity.nbu.Currency;
-import com.wasp.rottenpotatoes.exception.InvalidSortOrderException;
 import com.wasp.rottenpotatoes.request.MovieRequest;
 import com.wasp.rottenpotatoes.request.SortBy;
 import com.wasp.rottenpotatoes.request.SortingStrategy;
 import com.wasp.rottenpotatoes.service.MovieService;
+import com.wasp.rottenpotatoes.web.exception.InvalidSortOrderException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

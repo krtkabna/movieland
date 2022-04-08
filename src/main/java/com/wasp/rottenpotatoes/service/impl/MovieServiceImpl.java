@@ -1,13 +1,14 @@
-package com.wasp.rottenpotatoes.service;
+package com.wasp.rottenpotatoes.service.impl;
 
 import com.wasp.rottenpotatoes.dao.MovieDao;
 import com.wasp.rottenpotatoes.entity.Movie;
 import com.wasp.rottenpotatoes.entity.nbu.Currency;
-import com.wasp.rottenpotatoes.exception.MovieNotFoundException;
 import com.wasp.rottenpotatoes.request.MovieRequest;
 import com.wasp.rottenpotatoes.request.SortBy;
 import com.wasp.rottenpotatoes.request.SortingStrategy;
+import com.wasp.rottenpotatoes.service.MovieService;
 import com.wasp.rottenpotatoes.service.nbu.RateService;
+import com.wasp.rottenpotatoes.web.exception.MovieNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
